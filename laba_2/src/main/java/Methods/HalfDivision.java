@@ -91,6 +91,7 @@ public class HalfDivision {
         System.out.printf("%." + decimal + "f\n", Calculator.calculateFunction(x0, EQUATION_IDENTIFIER));
         System.out.println("Число итераций: " + count);
     }
+
 }
 //TODO график
 //TODO шо с верификацией делать будем
