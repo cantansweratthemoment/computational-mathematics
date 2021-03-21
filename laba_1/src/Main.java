@@ -25,7 +25,7 @@ public class Main {
             String[] matrix_arr;
             int k = 0;
             for (int i = 0; i < size; i++) {
-                matrix_s="";
+                matrix_s = "";
                 matrix_s = matrix_s.concat(reader.readLine());
                 matrix_arr = matrix_s.split(" ");
                 for (int j = 0; j < size; j++) {
@@ -68,9 +68,14 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Читать из файла? [y/n]");
-        if (sc.nextLine().equals("y")) {
+        String y = sc.nextLine();
+        if (y.equals("y")) {
             fromFile();
         } else {
+            if (!y.equals("n")) {
+                System.out.println("Попробуйте еще раз.");
+                System.exit(0);
+            }
             fromConsole();
         }
     }

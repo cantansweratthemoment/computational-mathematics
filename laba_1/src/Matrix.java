@@ -51,6 +51,13 @@ public class Matrix {
                 return false;
             }
         }
+        double proizv = 1;
+        for (int k = 0; k < size; k++) {//todo
+            proizv *= matrix[k][k];
+        }
+        if (proizv == 0) {
+            return false;
+        }
         return flag;
     }
 
@@ -110,6 +117,7 @@ public class Matrix {
 
     public void findSolution() {
         double[] quanityVector = new double[size];
+        double[] newQuanityVector = new double[size];
         double[] errorVector = new double[size];
         int iteration = 0;
         for (int i = 0; i < size; i++) {
@@ -125,8 +133,21 @@ public class Matrix {
                     }
                 }
                 errorVector[i] = Math.abs(quanityVector[i] - x);
-                quanityVector[i] = x;
+                newQuanityVector[i] = x;
                 if (i == size - 1) {
+                    for (int l = 0; l < size; l++) {
+                        quanityVector[l] = newQuanityVector[l];
+                    }
+                    System.out.println();
+                    System.out.println("Вектор решений:");
+                    for (int k = 0; k < size; k++) {
+                        System.out.printf("%.5f ", quanityVector[k]);
+                    }
+                    System.out.println();
+                    System.out.println("Вектор погрешностей:");
+                    for (int k = 0; k < size; k++) {
+                        System.out.printf("%e ", errorVector[k]);
+                    }
                     iteration++;
                     boolean flag = true;
                     for (int k = 0; k < size; k++) {
@@ -153,37 +174,5 @@ public class Matrix {
                 }
             }
         }
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public double[][] getMatrix() {
-        return matrix;
-    }
-
-    public void setMatrix(double[][] matrix) {
-        this.matrix = matrix;
-    }
-
-    public double[] getCoefficients() {
-        return coefficients;
-    }
-
-    public void setCoefficients(double[] coefficients) {
-        this.coefficients = coefficients;
-    }
-
-    public double getAccuracy() {
-        return accuracy;
-    }
-
-    public void setAccuracy(double accuracy) {
-        this.accuracy = accuracy;
     }
 }
