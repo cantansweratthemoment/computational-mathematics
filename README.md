@@ -1,2 +1,2 @@
 # computational-mathematics
-labs (2 course)🍍
+Some home tasks for Computational Mathematics (2 course)🐓
