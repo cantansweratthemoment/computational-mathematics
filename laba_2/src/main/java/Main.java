@@ -1,4 +1,6 @@
 import Methods.HalfDivision;
+import Methods.Newtons;
+import Methods.SimpleIteration;
 import Utils.ColorfulString;
 
 import java.io.*;
@@ -6,7 +8,7 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
-    static String[] equations = {"2*x^3+3.41*x^2-23.74*x+2.95", "x+(23.9*x+6)^(1/2)", "cos(x)+1/2"};
+    static String[] equations = {"2*x^3+3.41*x^2-23.74*x+2.95", "(23.9*x+6)^(1/2)-239", "cos(x)+1/2"};
     static int chosenEquation;
     static String[] methods = {"Метод половинного деления", "Метод Ньютона", "Метод простой итерации"};
     static int chosenMethod;
@@ -45,8 +47,15 @@ public class Main {
             readFromFile();
         } else {
             readFromConsole();
-            HalfDivision.solution(left, right, accuracy, chosenEquation);
         }
+        if (chosenMethod == 1)
+            HalfDivision.solution(left, right, accuracy, chosenEquation);
+        if (chosenMethod == 2)
+            Newtons.solution(left, right, accuracy, chosenEquation);
+        if (chosenMethod == 3)
+            SimpleIteration.solution(left, right, accuracy, chosenEquation);
+
+
     }
 
     public static void readFromFile() throws IOException {
@@ -77,9 +86,16 @@ public class Main {
         left = sc.nextDouble();
         ColorfulString.println("Введите правую границу интервала.");
         right = sc.nextDouble();
+        while (right - left <= 0) {
+            ColorfulString.println("Введите границы ещё раз.");
+            ColorfulString.println("Введите левую границу интервала.");
+            left = sc.nextDouble();
+            ColorfulString.println("Введите правую границу интервала.");
+            right = sc.nextDouble();
+        }
         ColorfulString.println("Введите погрешность вычисления.");
         accuracy = sc.nextDouble();
     }
 }
 //TODO Если будет время, ловить ошибки ввода (не только в Main).
-//TODO Правая граница должна быть больше левой :)
+//TODO Вывод в файл.
