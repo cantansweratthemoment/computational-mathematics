@@ -52,7 +52,7 @@ public class Matrix {
             }
         }
         double proizv = 1;
-        for (int k = 0; k < size; k++) {//todo
+        for (int k = 0; k < size; k++) {
             proizv *= matrix[k][k];
         }
         if (proizv == 0) {

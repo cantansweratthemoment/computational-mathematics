@@ -28,8 +28,11 @@ public class Graph {
                 .title("Graph").xAxisTitle("X").yAxisTitle("Y")
                 .build();
         chart.setCustomXAxisTickLabelsFormatter((x) -> String.format("%.2f", x));
-        chart.addSeries("Graph", this.xs, this.ys);
-        BitmapEncoder.saveBitmap(chart, "Graph", BitmapEncoder.BitmapFormat.PNG);
+        try{chart.addSeries("Graph", this.xs, this.ys);
+        BitmapEncoder.saveBitmap(chart, "Graph", BitmapEncoder.BitmapFormat.PNG);}catch (IllegalArgumentException e){
+            System.out.println("Некорректные границы промежутка!");
+            System.exit(0);
+        }
     }
 
     public static List<Double> createXSeries(double left, double right) {
