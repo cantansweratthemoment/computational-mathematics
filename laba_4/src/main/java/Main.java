@@ -1,15 +1,15 @@
+import IO.PointsReader;
 import Utils.ColorfulString;
+import Structures.Point;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         boolean q = false;
         boolean readFromConsole = false;
         String w;
@@ -25,17 +25,38 @@ public class Main {
                 default -> ColorfulString.aggressivelyPrintln("Попробуйте ещё раз!");
             }
         }
+        ArrayList<Point> points;
+        PointsReader pointsReader = new PointsReader();
         if (!readFromConsole) {
             ColorfulString.println("Введите название файла.");
-            String fileName = sc.next();
+            String fileName = sc.nextLine();
             File file = new File(fileName);
             while (!file.exists()) {
                 ColorfulString.aggressivelyPrintln("Попробуйте ещё раз.");
-                fileName = sc.next();
+                fileName = sc.nextLine();
                 file = new File(fileName);
             }
             FileReader fr = new FileReader(fileName);
             BufferedReader reader = new BufferedReader(fr);
+            points = pointsReader.readFromFile(reader);
+
+        } else {
+            points = pointsReader.readFromConsole(sc);
         }
+
     }
 }
+/* q = false;
+        boolean writeToConsole = false;
+        while (!q) {
+            Utils.ColorfulString.println("Записывать выходные данные в консоль? [y]/[n]");
+            w = sc.nextLine();
+            switch (w) {
+                case "y" -> {
+                    writeToConsole = true;
+                    q = true;
+                }
+                case "n" -> q = true;
+                default -> Utils.ColorfulString.aggressivelyPrintln("Попробуйте ещё раз!");
+            }
+        }*/
