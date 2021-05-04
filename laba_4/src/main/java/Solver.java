@@ -1,19 +1,39 @@
+import IO.AnswerWriter;
 import Structures.Dependencies.*;
 import Structures.Point;
+import Utils.ColorfulString;
+import Utils.Graph;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Solver {
     private ArrayList<Point> points;
     private boolean writeToConsole;
 
-    public Solver(ArrayList<Point> points, boolean writeToConsole) {
+    public Solver(ArrayList<Point> points) {
         this.points = points;
-        this.writeToConsole = writeToConsole;
     }
 
-    void solve() {
-        //todo График и вывод наверное сюда надо будет пихнуть.
+    void solve() throws IOException {
+        Graph graph = new Graph(points);
+        graph.drawMainFrame();
+        boolean q = false;
+        String w;
+        Scanner sc = new Scanner(System.in);
+        while (!q) {
+            ColorfulString.println("Записывать выходные данные в консоль? [y]/[n]");
+            w = sc.nextLine();
+            switch (w) {
+                case "y" -> {
+                    writeToConsole = true;
+                    q = true;
+                }
+                case "n" -> q = true;
+                default -> ColorfulString.aggressivelyPrintln("Попробуйте ещё раз!");
+            }
+        }
         LinearDependence linearDependence = new LinearDependence(points);
         PolynomialDependence polynomialDependence = new PolynomialDependence(points);
         ExponentialDependence exponentialDependence = new ExponentialDependence(points);
@@ -24,10 +44,15 @@ public class Solver {
         dependencies.add(polynomialDependence);
         dependencies.add(exponentialDependence);
         dependencies.add(logarithmicDependence);
-        dependencies.add(polynomialDependence);
+        dependencies.add(powerDependence);
         for (Dependence dependence : dependencies) {
             dependence.findDependence();
-            //todo рисовать решение если слау решилась
+            if (dependence.isCanBeSolved()) {
+                graph.drawDependency(dependence);
+            }
         }
+        AnswerWriter answerWriter = new AnswerWriter(dependencies, writeToConsole);
+        answerWriter.printAnswer();
+        graph.showGraph();
     }
 }

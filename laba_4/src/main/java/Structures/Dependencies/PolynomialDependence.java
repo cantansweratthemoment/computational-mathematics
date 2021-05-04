@@ -13,12 +13,10 @@ public class PolynomialDependence extends Dependence {
     public PolynomialDependence(ArrayList<Point> values) {
         this.name = "Полиномиальная функция второй степени";
         this.values = values;
-        calculateDeviationMeasure(values);
-        calculateStandardDeviation();
     }
 
     @Override
-   public void findDependence() {
+    public void findDependence() {
         double a1 = 0d, b1 = 0d, d1 = 0d, a2 = 0d, d2 = 0d, a3 = 0d, d3 = 0d;
         for (Point point : values) {
             a1 += pow(point.getX(), 2);
@@ -29,7 +27,7 @@ public class PolynomialDependence extends Dependence {
             a3 += pow(point.getX(), 4);
             d3 += pow(point.getX(), 2) * point.getY();
         }
-        double[][] matrixC = {{a1, b1, values.size()}, {a2, a1, b1}, {a3, a2, a1}};
+        double[][] matrixC = {{values.size(), b1, a1}, {b1, a1, a2}, {a1, a2, a3}};
         double[] coefficients = {d1, d2, d3};
         Solution.matrix = new Matrix(3, matrixC, coefficients, 0.001);
         Solution.solve();
@@ -37,9 +35,15 @@ public class PolynomialDependence extends Dependence {
             ColorfulString.aggressivelyPrintln("Система не решилась.");
             canBeSolved = false;
         } else {
-            this.coefficients = Solution.matrix.getQuanityVector();
-            this.function = (Double x) -> coefficients[0] * pow(x, 2) + coefficients[1] * x + coefficients[2];
-            this.functionName = String.format("%.3fx²%+.3fx%+.3f", coefficients[0], coefficients[1], coefficients[2]);
+            this.answers = Solution.matrix.getQuanityVector();
+            if (Double.isNaN(this.answers[0])) {
+                ColorfulString.aggressivelyPrintln("Система не решилась.");
+                canBeSolved = false;
+            }
+            this.function = (Double x) -> this.answers[0] * pow(x, 2) + this.answers[1] * x + this.answers[2];
+            this.functionName = String.format("%.3fx²%+.3fx%+.3f", this.answers[0], this.answers[1], this.answers[2]);
+            calculateDeviationMeasure(values);
+            calculateStandardDeviation();
         }
     }
 }

@@ -43,20 +43,7 @@ public class Main {
         } else {
             points = pointsReader.readFromConsole(sc);
         }
-
+        Solver solver = new Solver(points);
+        solver.solve();
     }
 }
-/* q = false;
-        boolean writeToConsole = false;
-        while (!q) {
-            Utils.ColorfulString.println("Записывать выходные данные в консоль? [y]/[n]");
-            w = sc.nextLine();
-            switch (w) {
-                case "y" -> {
-                    writeToConsole = true;
-                    q = true;
-                }
-                case "n" -> q = true;
-                default -> Utils.ColorfulString.aggressivelyPrintln("Попробуйте ещё раз!");
-            }
-        }*/

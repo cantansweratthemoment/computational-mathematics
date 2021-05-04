@@ -15,7 +15,21 @@ public abstract class Dependence {
     protected double deviationMeasure;
     protected UnaryOperator<Double> function;
     protected double standardDeviation;
-    protected double[] coefficients;
+    protected double[] answers;
+    protected boolean isLinear=false;
+    protected double pirsons;
+
+    public double getPirsons() {
+        return pirsons;
+    }
+
+    public boolean isLinear() {
+        return isLinear;
+    }
+
+    public boolean isCanBeSolved() {
+        return canBeSolved;
+    }
 
     public void calculateDeviationMeasure(ArrayList<Point> points) {
         double deviation = 0;

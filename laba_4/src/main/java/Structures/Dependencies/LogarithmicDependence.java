@@ -8,14 +8,11 @@ import Utils.ColorfulString;
 import java.util.ArrayList;
 
 import static java.lang.Math.*;
-import static java.lang.Math.exp;
 
 public class LogarithmicDependence extends Dependence {
     public LogarithmicDependence(ArrayList<Point> values) {
         this.name = "Логарифмическая функция";
         this.values = values;
-        calculateDeviationMeasure(values);
-        calculateStandardDeviation();
     }
 
     @Override
@@ -35,9 +32,15 @@ public class LogarithmicDependence extends Dependence {
             ColorfulString.aggressivelyPrintln("Система не решилась.");
             canBeSolved = false;
         } else {
-            this.coefficients = Solution.matrix.getQuanityVector();
-            this.function = (Double x) -> coefficients[0] * log(x) + coefficients[1];
-            this.functionName = String.format("%.3fln(x)%+.3f", coefficients[0], coefficients[1]);
+            this.answers = Solution.matrix.getQuanityVector();
+            if (Double.isNaN(this.answers[0])) {
+                ColorfulString.aggressivelyPrintln("Система не решилась.");
+                canBeSolved = false;
+            }
+            this.function = (Double x) -> this.answers[0] * log(x) + this.answers[1];
+            this.functionName = String.format("%.3fln(x)%+.3f", this.answers[0], this.answers[1]);
+            calculateDeviationMeasure(values);
+            calculateStandardDeviation();
         }
     }
 }

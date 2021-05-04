@@ -13,12 +13,10 @@ public class PowerDependence extends Dependence {
     public PowerDependence(ArrayList<Point> values) {
         this.name = "Степенная функция";
         this.values = values;
-        calculateDeviationMeasure(values);
-        calculateStandardDeviation();
     }
 
     @Override
-   public void findDependence() {
+    public void findDependence() {
         double a1 = 0d, b1 = 0d, c1 = 0d, c2 = 0d;
         for (Point value : values) {
             a1 += pow(log(value.getX()), 2);
@@ -34,10 +32,16 @@ public class PowerDependence extends Dependence {
             ColorfulString.aggressivelyPrintln("Система не решилась.");
             canBeSolved = false;
         } else {
-            this.coefficients = Solution.matrix.getQuanityVector();
+            this.answers = Solution.matrix.getQuanityVector();
+            if (Double.isNaN(this.answers[0])) {
+                ColorfulString.aggressivelyPrintln("Система не решилась.");
+                canBeSolved = false;
+            }
             coefficients[0] = exp(coefficients[0]);
-            this.function = (Double x) -> coefficients[0] * pow(x, coefficients[1]);
-            this.functionName = String.format("%.3fx^%.3f", coefficients[0], coefficients[1]);
+            this.function = (Double x) -> this.answers[0] * pow(x, this.answers[1]);
+            this.functionName = String.format("%.3fx^%.3f", this.answers[0], this.answers[1]);
+            calculateDeviationMeasure(values);
+            calculateStandardDeviation();
         }
     }
 }

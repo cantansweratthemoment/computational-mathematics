@@ -11,21 +11,16 @@ import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
 public class LinearDependence extends Dependence {
-    private double pirsons;
 
-    public double getPirsons() {
-        return pirsons;
-    }
 
     public LinearDependence(ArrayList<Point> values) {
         this.name = "Линейная функция";
         this.values = values;
-        calculateDeviationMeasure(values);
-        calculateStandardDeviation();
+        isLinear = true;
     }
 
     @Override
-   public void findDependence() {
+    public void findDependence() {
         double a1 = 0d, b1 = 0d, c1 = 0d, c2 = 0d;
         for (Point value : values) {
             a1 += pow(value.getX(), 2);
@@ -33,6 +28,7 @@ public class LinearDependence extends Dependence {
             c1 += value.getX() * value.getY();
             c2 += value.getY();
         }
+       // System.out.println(a1 + " " + b1 + " " + c1 + " " + c2);
         double[][] matrixC = {{a1, b1}, {b1, values.size()}};
         double[] coefficients = {c1, c2};
         Solution.matrix = new Matrix(2, matrixC, coefficients, 0.001);
@@ -41,10 +37,16 @@ public class LinearDependence extends Dependence {
             ColorfulString.aggressivelyPrintln("Система не решилась.");
             canBeSolved = false;
         } else {
-            this.coefficients = Solution.matrix.getQuanityVector();
-            this.function = (Double x) -> coefficients[0] * x + coefficients[1];
-            this.functionName = String.format("%.3fx%+.3f", coefficients[0], coefficients[1]);
+            this.answers = Solution.matrix.getQuanityVector();
+            if (Double.isNaN(this.answers[0])) {
+                ColorfulString.aggressivelyPrintln("Система не решилась.");
+                canBeSolved = false;
+            }
+            this.function = (Double z) -> this.answers[0] * z + this.answers[1];
+            this.functionName = String.format("%.3fx%+.3f", this.answers[0], this.answers[1]);
             this.pirsons = calculateCoefficientOfCorrelation();
+            calculateDeviationMeasure(values);
+            calculateStandardDeviation();
         }
     }
 
