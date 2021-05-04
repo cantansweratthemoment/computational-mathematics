@@ -48,7 +48,10 @@ public class Solver {
         for (Dependence dependence : dependencies) {
             dependence.findDependence();
             if (dependence.isCanBeSolved()) {
-                graph.drawDependency(dependence);
+                try {
+                    graph.drawDependency(dependence);
+                } catch (IllegalArgumentException ignored) {
+                }
             }
         }
         AnswerWriter answerWriter = new AnswerWriter(dependencies, writeToConsole);
