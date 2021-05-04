@@ -70,7 +70,7 @@ public class AnswerWriter {
                     System.out.println("Коэффициент Пирсона = " + dependence.getPirsons());
                 }
             } else {
-                System.out.println(dependence.getName() + "не существует.");
+                System.out.println(dependence.getName() + " не существует.");
             }
         } else {
             if (dependence.isCanBeSolved()) {
@@ -96,7 +96,7 @@ public class AnswerWriter {
                     writer.write("Коэффициент Пирсона = " + dependence.getPirsons());
                 }
             } else {
-                writer.write(dependence.getName() + "не существует.");
+                writer.write(dependence.getName() + " не существует.");
             }
         }
     }

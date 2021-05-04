@@ -27,7 +27,7 @@ public class PointsReader {
                 ColorfulString.aggressivelyPrintln("Не менее 12!");
             }
         }
-        ColorfulString.println("Вводите точки в формате <x y>.");
+        ColorfulString.println("Вводите точки.");
         ArrayList<Point> points = new ArrayList<>();
         for (int i = 0; i < w; i++) {
             double x = 0, y = 0;

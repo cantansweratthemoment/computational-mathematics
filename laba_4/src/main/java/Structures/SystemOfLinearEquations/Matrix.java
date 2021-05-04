@@ -131,6 +131,9 @@ public class Matrix {
             double det2 = matrix[0][0] * coefficients[1] - matrix[0][1] * coefficients[0];
             result = new double[]{det1 / det, det2 / det};
             this.quanityVector = result;
+            if (det < Math.pow(10, -4)) {
+                quanityVector[0] = quanityVector[0] / 0;
+            }
         }
         if (size == 3) {
             double SX = matrix[0][1];
@@ -148,7 +151,10 @@ public class Matrix {
             double a = delta1 / delta;
             double b = delta2 / delta;
             double c = delta3 / delta;
-            this.quanityVector= new double[]{c, b, a};
+            this.quanityVector = new double[]{c, b, a};
+            if (delta < Math.pow(10, -4)) {
+                quanityVector[0] = quanityVector[0] / 0;
+            }
         }
 //        double[] quanityVector = new double[size];
 //        double[] newQuanityVector = new double[size];
