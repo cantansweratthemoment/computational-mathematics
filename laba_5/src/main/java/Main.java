@@ -36,17 +36,31 @@ public class Main {
         } else {
             colorfulPrint("Выберите функцию.\n");
             func = chooseFunction();
-            SortedMap<Double, Double> map = new TreeMap<>();
-            double inc = (func.getRight() - func.getLeft()) / (9);
-            for (double i = func.getLeft(); i <= func.getRight(); i += inc) {
-                map.put(i, func.getFunction().apply(i));
-            }
-            table = new Table(map);
+            table = new Table(readTableButWithFunction(func));
         }
         Method method = isLagrange ? new Lagrange() : new Newton();
-        double argumentValue = method.solve(table, 5);//todo лол
-        System.out.println("Приближённое значение функции, при x=" + 5 + ": " + argumentValue);
-        Chart.drawChart(table, argumentValue, 5, isTable);//todo убрать пятерку
+        double argument = readArgument();
+        double argumentValue = method.solve(table, argument);
+        System.out.println("Приближённое значение функции, при x=" + argument + ": " + argumentValue);
+        Chart.drawChart(table, argumentValue, argument, method);
+    }
+
+    private static double readArgument() {
+        colorfulPrint("Введите аргумент интерполяции.\n");
+        boolean q = false;
+        String w_s;
+        double w = 0;
+        while (!q) {
+            w_s = sc.next();
+            q = true;
+            try {
+                w = Double.parseDouble(w_s);
+            } catch (NumberFormatException e) {
+                aggressivelyPrint("Попробуйте ещё раз!");
+                q = false;
+            }
+        }
+        return w;
     }
 
     private static boolean chooseMethodAndInput() {
@@ -86,30 +100,6 @@ public class Main {
             } else {
                 aggressivelyPrint("Попробуйте ещё раз!\n");
             }
-        }
-        ColorfulString.colorfulPrint("Введите границы через пробел.");
-        q = false;
-        String w_s, e_s;
-        double w = 0, e = 0;
-        Scanner sc = new Scanner(System.in);
-        while (!q) {
-            w_s = sc.next();
-            e_s = sc.next();
-            q = true;
-            try {
-                w = Double.parseDouble(w_s);
-                e = Double.parseDouble(e_s);
-            } catch (NumberFormatException er) {
-                ColorfulString.aggressivelyPrint("Попробуйте ещё раз!");
-                q = false;
-            }
-        }
-        if (w > e) {
-            Func.values()[t - 1].setRight(w);
-            Func.values()[t - 1].setLeft(e);
-        } else {
-            Func.values()[t - 1].setRight(e);
-            Func.values()[t - 1].setLeft(w);
         }
         return Func.values()[t - 1];
     }
@@ -152,5 +142,42 @@ public class Main {
         }
         return map;
     }
+
+    private static SortedMap<Double, Double> readTableButWithFunction(Func func) {
+        colorfulPrint("Введите количество точек.\n");
+        String t_s;
+        int t = -1;
+        boolean q = false;
+        while (!q) {
+            t_s = sc.nextLine();
+            q = true;
+            try {
+                t = Integer.parseInt(t_s);
+            } catch (NumberFormatException e) {
+                aggressivelyPrint("Попробуйте ещё раз!\n");
+                q = false;
+            }
+        }
+        colorfulPrint("Вводите точки в формате \"x\", y мы посчитаем за вас.\n");
+        SortedMap<Double, Double> map = new TreeMap<>();
+        double x = 0, y = 0;
+        String x_s;
+        for (int i = 0; i < t; i++) {
+            System.out.print("Точка " + (i + 1) + ": ");
+            q = false;
+            while (!q) {
+                q = true;
+                x_s = sc.next();
+                try {
+                    x = Double.parseDouble(x_s);
+                    y = func.getFunction().apply(x);
+                } catch (NumberFormatException e) {
+                    aggressivelyPrint("Введите координаты точки ещё раз!\n");
+                    q = false;
+                }
+            }
+            map.put(x, y);
+        }
+        return map;
+    }
 }
-//todo ввод функции бурагозит
