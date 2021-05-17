@@ -6,9 +6,7 @@ import Structures.Table;
 import Utils.Chart;
 import Utils.ColorfulString;
 
-import java.util.Scanner;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import static Utils.ColorfulString.*;
 
@@ -119,6 +117,7 @@ public class Main {
                 q = false;
             }
         }
+        Set<Double> xs = new HashSet<>();
         colorfulPrint("Вводите точки в формате \"x y\"\n");
         SortedMap<Double, Double> map = new TreeMap<>();
         double x = 0, y = 0;
@@ -136,6 +135,12 @@ public class Main {
                 } catch (NumberFormatException e) {
                     aggressivelyPrint("Введите координаты точки ещё раз!\n");
                     q = false;
+                }
+                if (xs.contains(x)) {
+                    aggressivelyPrint("Вы ввели одинаковые x!");
+                    System.exit(0);
+                } else {
+                    xs.add(x);
                 }
             }
             map.put(x, y);
@@ -158,6 +163,7 @@ public class Main {
                 q = false;
             }
         }
+        Set<Double> xs = new HashSet<>();
         colorfulPrint("Вводите точки в формате \"x\", y мы посчитаем за вас.\n");
         SortedMap<Double, Double> map = new TreeMap<>();
         double x = 0, y = 0;
@@ -174,6 +180,12 @@ public class Main {
                 } catch (NumberFormatException e) {
                     aggressivelyPrint("Введите координаты точки ещё раз!\n");
                     q = false;
+                }
+                if (xs.contains(x)) {
+                    aggressivelyPrint("Вы ввели одинаковые x!");
+                    System.exit(0);
+                } else {
+                    xs.add(x);
                 }
             }
             map.put(x, y);
