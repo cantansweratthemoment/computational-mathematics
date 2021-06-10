@@ -65,10 +65,8 @@ public class Main {
         double h = readDouble(null, b - a);
 
         Double precision = null;
-        if (method instanceof Milne) {
             colorfulPrint("Введите точность.\n");
             precision = readDouble(0d, null);
-        }
 
         Result result = method.solve(equation, a, b, y0, h, precision);
         result.getSteps().forEach(step -> System.out.println("\n" + step));
@@ -76,8 +74,8 @@ public class Main {
         Result doubleStepResult = method.solve(equation, a, b, y0, 2 * h, precision);
         ArrayList<Double> y2h = doubleStepResult.getTable().getYs();
         int p = method.getOrder();
-        double R = (y2h.get(2) - result.getTable().getYs().get(2)) / (Math.pow(2, p) - 1);
-        colorfulPrint("\nОценка точности по правилу Рунге: R = " + R);
+      /*  double R = (y2h.get(2) - result.getTable().getYs().get(2)) / (Math.pow(2, p) - 1);
+        colorfulPrint("\nОценка точности по правилу Рунге: R = " + R);*/
 
         Chart.drawChart(result.getTable(), equation);
     }

@@ -20,13 +20,26 @@ public class Euler implements Method {
         Y.add(y0);
 
         int i = 1;
-        for (double x = a; x + h <= b; i++) {
+        for (double x = a; x + h <= b+0.00000000001; i++) {
             double yPrev = Y.get(Y.size() - 1);
             double func_value = equation.getFunction().apply(x, yPrev);
-            Y.add(yPrev + h * func_value);
-            steps.add(FormatResult.formatResult(i, x, yPrev, func_value, equation.getExactValue(x)));
-            x += h;
-            X.add(x);
+
+            double accuracy = Math.abs(equation.getExactValue(x) - yPrev);
+            steps.add(FormatResult.formatResult(i, x, yPrev, equation.getExactValue(x), accuracy));
+            if (accuracy > precision) {
+                h /= 2;
+                x = a;
+                i = 1;
+                X.clear();
+                Y.clear();
+                X.add(a);
+                Y.add(y0);
+                //x = X.get(X.size() - 1);
+            } else {
+                x += h;
+                Y.add(yPrev + h * func_value);
+                X.add(x);
+            }
         }
         return new Result(new Table(X, Y), steps);
     }
